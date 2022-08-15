@@ -85,6 +85,13 @@ export const filterAndSortFun = async function (filter: any) {
             });
         }
 
+        aggregates.push({
+            $facet: {
+                metadata: [{ $count: 'total' }, { $addFields: { page: parseInt(filter.pageNo) } }],
+                data: [{ $skip: 40 * (parseInt(filter.pageNo) - 1) }, { $limit: 40 }] // add projection here wish you re-shape the docs
+            }
+        });
+
         return mongoose.model('Product').aggregate(aggregates);
     } catch (err) {
         console.log(err);
