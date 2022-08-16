@@ -80,7 +80,10 @@ route.use('/sort', sort);
 route.post('/filterAndSort', async (req: Request, res: Response) => {
     try {
         let { filter } = req.body;
+
         const data = await filterAndSortFun(filter);
+        console.log(data[0].data.length);
+
         res.status(200).json({ data });
     } catch (err) {
         console.log(err);

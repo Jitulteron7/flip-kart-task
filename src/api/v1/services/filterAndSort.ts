@@ -2,7 +2,10 @@ import mongoose from 'mongoose';
 
 export const filterAndSortFun = async function (filter: any) {
     try {
+        console.log(filter, 'filter');
         let aggregates = [];
+        console.log(filter.sortBy === 'relevance', 'true or false');
+
         //sorting
         if (filter.sortBy === 'popularity') {
             aggregates.push({ $sort: { review: -1, rating: -1 } });
@@ -13,7 +16,7 @@ export const filterAndSortFun = async function (filter: any) {
         } else if (filter.sortBy === 'newest') {
             aggregates.push({ $sort: { createdAt: 1, review: 1, rating: 1 } });
         } else if (filter.sortBy === 'relevance') {
-            //  aggregates.push({ $sort: { review: -1, rating: -1 } });
+            aggregates.push({ $sort: { review: -1, rating: -1 } });
         }
 
         //filtering
@@ -87,8 +90,8 @@ export const filterAndSortFun = async function (filter: any) {
 
         aggregates.push({
             $facet: {
-                metadata: [{ $count: 'total' }, { $addFields: { page: parseInt(filter.pageNo) } }],
-                data: [{ $skip: 40 * (parseInt(filter.pageNo) - 1) }, { $limit: 40 }] // add projection here wish you re-shape the docs
+                metadata: [{ $count: 'total' }, { $addFields: { page: filter.pageNo } }],
+                data: [{ $skip: 40 * (filter.pageNo - 1) }, { $limit: 40 }] // add projection here wish you re-shape the docs
             }
         });
 
