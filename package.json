@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "nodemon --config nodemon.json src/server.ts",
         "build": "rm -rf bulid/ && prettier --write src/ && tsc",
-        "start": "nodemon build/server.js"
+        "start": "node build/server.js"
     },
     "keywords": [],
     "author": "",
